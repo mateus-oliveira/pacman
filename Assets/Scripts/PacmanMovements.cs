@@ -9,6 +9,8 @@ public class PacmanMovements : MonoBehaviour {
 
     private SpriteRenderer sprite;
     private Rigidbody2D rigidBody;
+    [SerializeField] private GameObject rightLimit;
+    [SerializeField] private GameObject leftLimit;
 
     // Start is called before the first frame update
     void Start() {
@@ -45,11 +47,26 @@ public class PacmanMovements : MonoBehaviour {
     }
 
 
-    void FixedUpdate(){
+    private void FixedUpdate(){
         if (moveX != 0) {
             rigidBody.velocity = new Vector2(moveX * moveSpeed, 0);
         } else if (moveY != 0) {
             rigidBody.velocity = new Vector2(0, moveY * moveSpeed);
         } 
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        float y = gameObject.transform.position.y;
+
+        if (other.gameObject.CompareTag("Right")) {
+            float x = leftLimit.transform.position.x;
+            gameObject.transform.position = new Vector3(x+0.2f, y, 0f);
+        }
+
+        else if (other.gameObject.CompareTag("Left")) {
+            float x = rightLimit.transform.position.x;
+            gameObject.transform.position = new Vector3(x-0.1f, y, 0f);
+        }
     }
 }
