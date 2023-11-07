@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Right
   - Left
+  - Food
   layers:
   - Default
   - TransparentFX

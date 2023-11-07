@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PacmanMovements : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class PacmanMovements : MonoBehaviour {
     private Rigidbody2D rigidBody;
     [SerializeField] private GameObject rightLimit;
     [SerializeField] private GameObject leftLimit;
+    [SerializeField] private Tile emptyTile;
+    [SerializeField] private Tilemap tilemap;
 
     // Start is called before the first frame update
     void Start() {
@@ -41,6 +44,11 @@ public class PacmanMovements : MonoBehaviour {
         } 
     }
 
+    private void ClearTiles() {
+        Vector3Int cellPosition = tilemap.WorldToCell(transform.position);
+        tilemap.SetTile(cellPosition, emptyTile);
+    }
+
 
     private void SetRotation(float angle) {
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
@@ -53,6 +61,10 @@ public class PacmanMovements : MonoBehaviour {
         } else if (moveY != 0) {
             rigidBody.velocity = new Vector2(0, moveY * moveSpeed);
         } 
+
+        if (rigidBody.velocity != new Vector2(0f, 0f)) {
+            ClearTiles();
+        }
     }
 
 
